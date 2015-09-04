@@ -1,28 +1,28 @@
 class Zoo
-  attr_reader :cages, :employees
+  attr_reader :name, :cages, :employees
   def initialize(name)
     @name = name
-    @cages = make_cages
+    @cages = []
+    create_cages
     @employees = []
   end
 
-  def make_cages
-    cages = []
-    10.times do
-      cages << Cage.new
+  def create_cages
+    10.times do |cage|
+      cage = Cage.new
+      cages << cage
     end
-    cages
   end
 
-  def add_employee(name)
-    @employees << name
+  def add_employee(new_employee)
+    employees << new_employee
   end
 
-  def add_animal(animal)
-    raise ZooAtCapacity if not cages.last.empty?
+  def add_animal(new_animal)
+    raise ZooAtCapacity unless cages.last.empty?
     cages.each do |cage|
       if cage.empty?
-        cage.animal = animal
+        cage.animal = new_animal
         break
       end
     end
@@ -34,7 +34,7 @@ class Zoo
       greeting += "#{employee.greet}\n"
     end
     cages.each do |cage|
-      if not cage.empty?
+      unless cage.empty?
         greeting += "#{cage.animal.speak}\n"
       end
     end
